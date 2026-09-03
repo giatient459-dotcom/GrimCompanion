@@ -6,8 +6,8 @@
 · Paper/Purpur **1.21.11** (hoặc phiên bản 1.21.x
 mà máy chủ bạn đang chạy)
 · Cài **PacketEvents** mới nhất (bắt buộc) và cài thêm GrimAC nữa
-· Mod **PacketEvents** : **https://modrinth.com/plugin/packetevents**
-· Mod **GrimAC** : **https://modrinth.com/plugin/grimac**
+· [PacketEvents(https://modrinth.com/plugin/packetevents)
+· [GrimAC](https://modrinth.com/plugin/grimac)
 
 
 ## Danh sách Plugin Mà Check
