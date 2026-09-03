@@ -14,12 +14,14 @@ mà máy chủ bạn đang chạy)
 
 ## Combo (Chiến đấu)
 
-Check Và Mô Tả
-· CrystalAura: Đặt/phá End Crystal quá nhanh (< 100ms)
-· AnchorAura: Đặt/phá Respawn Anchor quá nhanh
-· AutoClicker: CPS quá cao hoặc click quá đều (độ lệch chuẩn thấp)
-· KillAura: Xoay góc nhìn đột ngột (snap aim) khi tấn công
-· Reach: Tấn công từ khoảng cách > 3.2 block
+| Check | Mô tả |
+|-------|-------|
+| **CrystalAura** | Đặt/phá End Crystal quá nhanh (< 100ms) |
+| **AnchorAura** | Đặt/phá Respawn Anchor quá nhanh |
+| **AutoClicker** | CPS quá cao hoặc click quá đều (độ lệch chuẩn thấp) |
+| **KillAura** | Xoay góc nhìn đột ngột (snap aim) khi tấn công
+| **Reach** | Tấn công từ khoảng cách > 3.2 block
+
 
 
 ## Movement (Di chuyển)
@@ -41,3 +43,11 @@ Check Và Mô Tả
 | **CrystalOptimizer** | Phát hiện Marlow's Crystal Optimizer |
 | **ClientBrand** | Không gửi brand hoặc brand nằm trong danh sách cấm |
 | **Ping** | Ping cao hoặc keep-alive bất thường |
+
+
+### World
+| Check | Mô tả |
+|---|---|
+| Scaffold | Đặt block quá nhanh (auto-bridge) |
+
+Tắt cả ngưỡng (delay, CPS, goc, so VL...) đều chỉnh được trong `config.yml`.
