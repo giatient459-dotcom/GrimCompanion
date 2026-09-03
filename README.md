@@ -23,19 +23,21 @@ Check Và Mô Tả
 
 
 ## Movement (Di chuyển)
-Check và mô tả
-· Flight: Ở trên không quá lâu bất thường mà không hợp lệ
-· Speed: Di chuyển nhanh hơn tốc độ cho phép
-· NoSlowDown: Không bị chậm lại khi block/ăn/nổ giường
 
+| Check | Mô tả |
+|-------|-------|
+| **Flight** | Ở trên không quá lâu bất thường mà không hợp lệ |
+| **Speed** | Di chuyển nhanh hơn tốc độ cho phép |
+| **NoSlowdown** | Không bị chậm lại khi block/ăn/nổ giường |
 
 ## Exploit (Khai thác lỗi)
-Check và mô tả
-· ItemMacro: Sử dụng macro item (ClickPearl, MiddleClickExtra)
-· AutoFirework: Tự động dùng pháo hoa khi bay elytra
-· ElytraTarget: Tự động nhắm mục tiêu khi bay elytra
-. AutoCart: Tự động dùng TNT Cart
-. CrystalOptimizer: Phát hiện Marlow's Crystal Optimizer
-. ClientBrand: Không gửi brand hoặc brand nằm trong danh sách cấm
-. Ping:Ping cao hay keep-alive một cách bất thường
 
+| Check | Mô tả |
+|-------|-------|
+| **ItemMacro** | Sử dụng macro item (ClickPearl, MiddleClickExtra) |
+| **AutoFirework** | Tự động dùng pháo hoa khi bay elytra |
+| **ElytraTarget** | Tự động nhắm mục tiêu khi bay elytra |
+| **AutoCart** | Tự động dùng TNT Cart |
+| **CrystalOptimizer** | Phát hiện Marlow's Crystal Optimizer |
+| **ClientBrand** | Không gửi brand hoặc brand nằm trong danh sách cấm |
+| **Ping** | Ping cao hoặc keep-alive bất thường |
