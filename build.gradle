@@ -25,26 +25,21 @@ repositories {
         url = "https://jitpack.io"
     }
     maven {
-        // Repo chinh thuc cua GrimAC (chua module 'api'). Neu repo nay doi dia chi,
-        // co the thay bang jitpack: "com.github.GrimAnticheat:Grim:<version>"
         name = "grimac"
         url = "https://repo.grim.ac/releases"
+    }
+    maven {
+        name = "grimacSnapshots"
+        url = "https://repo.grim.ac/snapshots"
     }
 }
 
 dependencies {
-    // Doi khop dung minor version server ban dang chay (vi du: 1.21.11-R0.1-SNAPSHOT).
-    // Neu ban lay server tu getbukkit/papermc cho version khac, sua lai chuoi nay cho khop.
     compileOnly "io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT"
-
-    // QUAN TRONG: PacketEvents 2.5.0 chi ho tro toi Minecraft 1.21.1 - KHONG dung cho 1.21.11.
-    // Dung ban moi nhat de dam bao ho tro dung protocol cua server ban.
     compileOnly "com.github.retrooper:packetevents-spigot:2.13.0"
-
-    // GrimAC API - chi dung de doc violation data / lang nghe su kien, khong bundle vao jar.
-    // KIEM TRA LAI group:artifact:version nay khop voi ban GrimAC dang cai tren server ban,
-    // vi API cua GrimAC co the doi ten package/class giua cac version.
-    compileOnly "ac.grim.grimac:api:2.3.62"
+    
+    // GrimAC API - dùng SNAPSHOT
+    compileOnly "ac.grim.grimac:api:2.3.62-SNAPSHOT"
 }
 
 def targetJavaVersion = 21
