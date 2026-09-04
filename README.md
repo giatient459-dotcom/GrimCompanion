@@ -135,3 +135,7 @@ plugins/GrimCompanion/
 └── logs/
     └── violations.log
 ```
+
+## Nếu như bạn muốn góp ý/đóng góp cho plugin này
+Liên hệ
+.[Server-Discord](https://discord.gg/6tZpsjMAM)
