@@ -4,6 +4,8 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.grimcompanion.checks.CheckManager;
 import com.grimcompanion.commands.GrimCompanionCommand;
+import com.grimcompanion.compat.AntiCheatDetector;
+import com.grimcompanion.compat.BypassManager;
 import com.grimcompanion.data.DataManager;
 import com.grimcompanion.engine.PredictionEngine;
 import com.grimcompanion.integration.GrimIntegration;
@@ -25,6 +27,8 @@ public final class GrimCompanion extends JavaPlugin {
     private ConfigUtil configUtil;
     private GrimIntegration grimIntegration;
     private PredictionEngine predictionEngine;
+    private BypassManager bypassManager;
+    private AntiCheatDetector antiCheatDetector;
 
     @Override
     public void onLoad() {
@@ -47,6 +51,10 @@ public final class GrimCompanion extends JavaPlugin {
         this.dataManager = new DataManager(this);
         this.predictionEngine = new PredictionEngine(this);
         this.checkManager = new CheckManager(this);
+        this.bypassManager = new BypassManager();
+
+        // Don dep bypass het han moi 20 giay (400 tick), tranh memory leak neu server chay lau
+        getServer().getScheduler().runTaskTimer(this, () -> bypassManager.cleanupExpired(), 400L, 400L);
 
         // Dang ky packet listener
         PacketEvents.getAPI().getEventManager().registerListener(
@@ -64,6 +72,11 @@ public final class GrimCompanion extends JavaPlugin {
         // doi chieu 2 nguon du lieu voi nhau.
         this.grimIntegration = new GrimIntegration(this);
         getServer().getScheduler().runTask(this, () -> grimIntegration.tryHook());
+
+        // Tu dong do cac anti-cheat KHAC (khong phai GrimAC) de canh bao/tranh xung dot
+        // kiem tra di chuyen trung lap. Xem AntiCheatDetector.java.
+        this.antiCheatDetector = new AntiCheatDetector(this);
+        getServer().getScheduler().runTask(this, () -> antiCheatDetector.detectAndWarn());
 
         getLogger().info("GrimCompanion da duoc bat thanh cong! (" + checkManager.getChecks().size() + " check dang hoat dong)");
     }
@@ -101,5 +114,9 @@ public final class GrimCompanion extends JavaPlugin {
 
     public PredictionEngine getPredictionEngine() {
         return predictionEngine;
+    }
+
+    public BypassManager getBypassManager() {
+        return bypassManager;
     }
 }
