@@ -1,6 +1,6 @@
 package com.grimcompanion.listeners;
 
-import com.github.retrooper.packetevents.event.PacketListenerAbstract;
+import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.grimcompanion.GrimCompanion;
@@ -11,8 +11,13 @@ import org.bukkit.entity.Player;
  * Diem vao trung tam cho tat ca packet PacketEvents bat duoc.
  * Chuyen tiep den CheckManager de dispatch toi tung check.
  * Cung cap them mot so xu ly chung (vd: cap nhat client brand, keepalive).
+ *
+ * LUU Y VE API: tu PacketEvents ~2.9+ (bao gom 2.13.0 dang dung), "PacketListener" la
+ * mot INTERFACE (khong con la "PacketListenerAbstract" de extends nhu ban cu 2.5.0).
+ * Class nay implement thang interface do; khi dang ky voi priority, dung ham
+ * asAbstract(priority) (default method co san tren interface) - xem GrimCompanion.java.
  */
-public class PacketListener extends PacketListenerAbstract {
+public class PacketListener implements com.github.retrooper.packetevents.event.PacketListener {
 
     private final GrimCompanion plugin;
 
