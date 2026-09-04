@@ -55,7 +55,7 @@ public class CrystalAuraCheck extends Check {
             WrapperPlayClientInteractEntity wrapper = new WrapperPlayClientInteractEntity(event);
 
             Entity target = findEntityById(player, wrapper.getEntityId());
-            if (target == null || target.getType() != EntityType.ENDER_CRYSTAL) return;
+            if (target == null || target.getType() != EntityType.END_CRYSTAL) return;
 
             long now = System.currentTimeMillis();
 
