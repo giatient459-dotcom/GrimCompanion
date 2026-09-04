@@ -23,6 +23,16 @@ engine:
   horizontal-tolerance-multiplier: 1.25   # % vuot qua toc do ngang cho phep truoc khi tru trust buffer
   max-trust-buffer: 6.0            # so lan sai lech lien tiep duoc "tha" truoc khi thuc su flag (giam false positive)
 
+# =========================================================
+#  Tuong thich voi plugin khac
+# =========================================================
+compatibility:
+  # Neu true: khi phat hien 1 anti-cheat KHAC (Vulcan, NoCheatPlus, AAC...) dang chay,
+  # GrimCompanion se TU DONG TAT Flight/Speed/NoSlowdown de tranh 2 plugin cung flag/kick
+  # trung lap cho cung 1 hanh vi. Xem AntiCheatDetector.java de biet danh sach da nhan dien.
+  # Mac dinh false vi ban co the muon giu ca 2 chay song song de doi chieu ket qua.
+  auto-disable-movement-on-conflict: false
+
 integration:
   # Dua vi pham (flag/punishment) tu GrimAC vao chung he thong canh bao/thong ke
   # cua GrimCompanion (/gc stats, /gc check), hien thi voi tien to "Grim:" de phan biet
