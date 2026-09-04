@@ -55,6 +55,17 @@ public abstract class Check {
         if (!enabled) return;
         if (player.hasPermission("grimcompanion.bypass")) return;
 
+        // Kiem tra bypass tam thoi (do plugin khac hoac admin cap qua BypassManager) -
+        // dung cho cac tinh huong hop le nhung "trong bat thuong" (thang may, jetpack,
+        // cutscene, teleport lien tuc do plugin khac dieu khien). Xem BypassManager.java.
+        if (plugin.getBypassManager().isBypassed(player, name)) {
+            if (plugin.getConfig().getBoolean("debug", false)) {
+                plugin.getLogger().info("[Debug] Bo qua flag " + name + " cho " + player.getName()
+                        + " do dang trong thoi gian bypass.");
+            }
+            return;
+        }
+
         PlayerData data = plugin.getDataManager().getPlayerData(player);
         int vl = data.incrementViolation(name);
 
