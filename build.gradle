@@ -10,8 +10,9 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+// Force download dependencies từ Maven Central trước
 repositories {
-    mavenCentral()
+    mavenCentral()  // Ưu tiên Maven Central
     maven {
         name = "papermc"
         url = "https://repo.papermc.io/repository/maven-public/"
@@ -31,22 +32,6 @@ repositories {
     maven {
         name = "grimacSnapshots"
         url = "https://repo.grim.ac/snapshots"
-    }
-}
-
-dependencies {
-    compileOnly "io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT"
-    compileOnly "com.github.retrooper:packetevents-spigot:2.13.0"
-    
-    // GrimAC API - dùng SNAPSHOT
-    compileOnly "ac.grim.grimac:api:2.3.62-SNAPSHOT"
-}
-
-def targetJavaVersion = 21
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-    if (targetJavaVersion >= 10) {
-        options.release.set(targetJavaVersion)
     }
 }
 
