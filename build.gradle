@@ -10,9 +10,8 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
-// Force download dependencies từ Maven Central trước
 repositories {
-    mavenCentral()  // Ưu tiên Maven Central
+    mavenCentral()
     maven {
         name = "papermc"
         url = "https://repo.papermc.io/repository/maven-public/"
@@ -26,12 +25,33 @@ repositories {
         url = "https://jitpack.io"
     }
     maven {
-        name = "grimac"
-        url = "https://repo.grim.ac/releases"
-    }
-    maven {
+        // Repo Maven chinh thuc cua GrimAC (theo tai lieu tai github.com/GrimAnticheat/GrimAPI
+        // va docs.grim.ac/test/api). Neu repo nay doi dia chi, kiem tra lai o 2 link tren.
         name = "grimacSnapshots"
         url = "https://repo.grim.ac/snapshots"
+    }
+}
+
+dependencies {
+    // Doi khop dung minor version server ban dang chay (vi du: 1.21.11-R0.1-SNAPSHOT).
+    // Neu ban lay server tu getbukkit/papermc cho version khac, sua lai chuoi nay cho khop.
+    compileOnly "io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT"
+
+    // QUAN TRONG: PacketEvents 2.5.0 chi ho tro toi Minecraft 1.21.1 - KHONG dung cho 1.21.11.
+    // Dung ban moi nhat de dam bao ho tro dung protocol cua server ban.
+    compileOnly "com.github.retrooper:packetevents-spigot:2.13.0"
+
+    // GrimAC API - artifact/repo dung theo tai lieu chinh thuc (github.com/GrimAnticheat/GrimAPI).
+    // Version 1.2.4.0 la ban moi nhat tinh den GrimAC v2.3.73 (ho tro chinh thuc Minecraft 1.21.10/1.21.11).
+    // KIEM TRA LAI tai https://repo.grim.ac/snapshots hoac docs.grim.ac/test/api xem co ban moi hon khong.
+    compileOnly "ac.grim.grimac:GrimAPI:1.2.4.0"
+}
+
+def targetJavaVersion = 21
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    if (targetJavaVersion >= 10) {
+        options.release.set(targetJavaVersion)
     }
 }
 
