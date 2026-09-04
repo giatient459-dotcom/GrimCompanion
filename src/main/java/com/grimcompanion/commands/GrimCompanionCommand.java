@@ -43,9 +43,47 @@ public class GrimCompanionCommand implements CommandExecutor, TabCompleter {
             case "alerts" -> handleAlerts(sender, prefix);
             case "stats" -> handleStats(sender, prefix, args);
             case "reset" -> handleReset(sender, prefix, args);
+            case "bypass" -> handleBypass(sender, prefix, args);
             default -> sendHelp(sender, prefix);
         }
         return true;
+    }
+
+    /**
+     * /gc bypass <player> <check|all> <giay> - cap bypass tam thoi thu cong, dung khi
+     * mot plugin khac (thang may, jetpack...) gay di chuyen la nhung khong ho tro goi
+     * BypassManager API truc tiep. Xem them com.grimcompanion.compat.BypassManager.
+     */
+    private void handleBypass(CommandSender sender, String prefix, String[] args) {
+        if (!sender.hasPermission("grimcompanion.admin")) {
+            sender.sendMessage(prefix + errMsg("no-permission"));
+            return;
+        }
+        if (args.length < 4) {
+            sender.sendMessage(prefix + "§cCu phap: /gc bypass <player> <check|all> <giay>");
+            return;
+        }
+        Player target = Bukkit.getPlayer(args[1]);
+        if (target == null) {
+            sender.sendMessage(prefix + errMsg("player-not-found"));
+            return;
+        }
+        String checkName = args[2];
+        int seconds;
+        try {
+            seconds = Integer.parseInt(args[3]);
+        } catch (NumberFormatException ex) {
+            sender.sendMessage(prefix + "§cSo giay khong hop le: " + args[3]);
+            return;
+        }
+        if (seconds <= 0 || seconds > 300) {
+            sender.sendMessage(prefix + "§cSo giay phai trong khoang 1-300.");
+            return;
+        }
+
+        plugin.getBypassManager().grantBypass(target, checkName, seconds);
+        sender.sendMessage(prefix + "§aDa cap bypass '" + checkName + "' cho " + target.getName()
+                + " trong " + seconds + " giay.");
     }
 
     private void handleReload(CommandSender sender, String prefix) {
@@ -161,6 +199,7 @@ public class GrimCompanionCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage("§e/gc alerts §7- Bat/tat canh bao");
         sender.sendMessage("§e/gc stats <player> §7- Xem thong ke vi pham");
         sender.sendMessage("§e/gc reset <player> §7- Reset VL");
+        sender.sendMessage("§e/gc bypass <player> <check|all> <giay> §7- Cap bypass tam thoi (thang may, jetpack...)");
     }
 
     private String msg(String key, String def) {
@@ -174,12 +213,19 @@ public class GrimCompanionCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return filterStartsWith(List.of("reload", "check", "alerts", "stats", "reset"), args[0]);
+            return filterStartsWith(List.of("reload", "check", "alerts", "stats", "reset", "bypass"), args[0]);
         }
-        if (args.length == 2 && List.of("check", "stats", "reset").contains(args[0].toLowerCase())) {
+        if (args.length == 2 && List.of("check", "stats", "reset", "bypass").contains(args[0].toLowerCase())) {
             List<String> names = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) names.add(p.getName());
             return filterStartsWith(names, args[1]);
+        }
+        if (args.length == 3 && args[0].equalsIgnoreCase("bypass")) {
+            return filterStartsWith(List.of("all", "flight", "speed", "noslowdown", "crystalaura",
+                    "anchoraura", "autoclicker", "killaura", "reach", "scaffold"), args[2]);
+        }
+        if (args.length == 4 && args[0].equalsIgnoreCase("bypass")) {
+            return filterStartsWith(List.of("5", "10", "30", "60"), args[3]);
         }
         return Collections.emptyList();
     }
