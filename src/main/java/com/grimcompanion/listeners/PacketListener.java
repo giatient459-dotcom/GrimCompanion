@@ -1,6 +1,8 @@
 package com.grimcompanion.listeners;
 
-import com.github.retrooper.packetevents.event.PacketListener;
+// XÓA dòng import này đi:
+// import com.github.retrooper.packetevents.event.PacketListener;
+
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.grimcompanion.GrimCompanion;
