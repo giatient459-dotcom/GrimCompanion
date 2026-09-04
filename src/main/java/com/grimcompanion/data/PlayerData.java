@@ -334,7 +334,7 @@ public class PlayerData {
         long now = System.currentTimeMillis();
         if (lastRotationTime != 0L) {
             float deltaYaw = Math.abs(normalizeAngle(yaw - lastYaw));
-            yawDeltaHistory.addLast((long) deltaYaw);
+            yawDeltaHistory.addLast(deltaYaw);
             while (yawDeltaHistory.size() > 40) yawDeltaHistory.pollFirst();
         }
         this.lastYaw = yaw;
