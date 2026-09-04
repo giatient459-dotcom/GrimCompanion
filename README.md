@@ -149,3 +149,4 @@ Khi vào Discord, nên chuẩn bị sẵn:
 - Version Paper/server, version PacketEvents, version GrimCompanion đang dùng
 - Log lỗi (nếu có) từ console hoặc `plugins/GrimCompanion/logs/violations.log`
 - Các bước để tái hiện lỗi (nếu là bug)
+- Muốn làm dev plugin này 
