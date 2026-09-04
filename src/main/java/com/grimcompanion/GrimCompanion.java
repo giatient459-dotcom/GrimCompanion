@@ -56,9 +56,10 @@ public final class GrimCompanion extends JavaPlugin {
         // Don dep bypass het han moi 20 giay (400 tick), tranh memory leak neu server chay lau
         getServer().getScheduler().runTaskTimer(this, () -> bypassManager.cleanupExpired(), 400L, 400L);
 
-        // Dang ky packet listener
+        // Dang ky packet listener (PacketEvents >=2.9: dung asAbstract() de gan priority,
+        // vi "PacketListener" gio la interface chu khong con extends duoc PacketListenerAbstract)
         PacketEvents.getAPI().getEventManager().registerListener(
-                new PacketListener(this), PacketListenerPriority.NORMAL
+                new PacketListener(this).asAbstract(PacketListenerPriority.NORMAL)
         );
 
         // Dang ky command
