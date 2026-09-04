@@ -1,0 +1,33 @@
+name: GrimCompanion
+version: ${version}
+main: com.grimcompanion.GrimCompanion
+api-version: 1.21
+author: TienDay
+description: Anti-cheat companion plugin bo sung cho GrimAC, phat hien cac dang gian lan pho bien.
+depend: [packetevents]
+softdepend: [GrimAC]
+
+commands:
+  grimcompanion:
+    description: Quan ly plugin GrimCompanion
+    usage: /<command> [reload|check|alerts|stats|reset]
+    aliases: [gc, grimc]
+    permission: grimcompanion.admin
+
+permissions:
+  grimcompanion.*:
+    description: Tat ca quyen cua GrimCompanion
+    default: op
+    children:
+      grimcompanion.admin: true
+      grimcompanion.staff: true
+      grimcompanion.bypass: true
+  grimcompanion.admin:
+    description: Quyen quan tri (reload, reset, check)
+    default: op
+  grimcompanion.staff:
+    description: Nhan canh bao vi pham (alerts)
+    default: op
+  grimcompanion.bypass:
+    description: Bo qua tat ca cac check
+    default: false

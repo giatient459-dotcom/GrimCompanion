@@ -1,133 +1,133 @@
 # GrimCompanion
 
-Plugin anti-cheat bổ trợ (companion) cho Paper 1.21, dùng PacketEvents để phát hiện
-các dạng gian lận phổ biến mà các anti-cheat khác (như GrimAC) có thể chưa bao phủ
-đầy đủ hoặc cần tuỳ chỉnh riêng theo server. Chạy độc lập hoặc song song với GrimAC.
+Plugin anti-cheat bo sung (companion) cho Paper 1.21, dung PacketEvents de phat hien
+cac dang gian lan pho bien ma cac anti-cheat khac (nhu GrimAC) co the chua bao phu
+day du hoac can tuy chinh rieng theo server. Chay doc lap hoac song song voi GrimAC.
 
-## Yêu cầu
+## Yeu cau
 
-- Paper/Purpur **1.21.11** (hoặc bản 1.21.x server bạn đang chạy - xem lưu ý bên dưới)
-- Java **21** (Paper từ 1.20.5 trở đi và PacketEvents 2.10+ đều cần Java 21, KHÔNG còn dùng Java 17)
-- [PacketEvents](https://modrinth.com/plugin/packetevents) **2.13.0** (bắt buộc, đặt trước trong `plugins/`)
-- GrimAC (tuỳ chọn, soft depend - không bắt buộc)
+- Paper/Purpur **1.21.11** (hoac ban 1.21.x server ban dang chay - xem luu y ben duoi)
+- Java **21** (Paper tu 1.20.5 tro di va PacketEvents 2.10+ deu can Java 21, KHONG con dung Java 17)
+- [PacketEvents](https://modrinth.com/plugin/packetevents) **2.13.0** (bat buoc, dat truoc trong `plugins/`)
+- GrimAC (tuy chon, soft depend - khong bat buoc)
 
-> **Lưu ý quan trọng về version**: PacketEvents 2.5.0 (bản đầu của project) chỉ hỗ trợ tới
-> Minecraft 1.21.1, KHÔNG chạy đúng trên 1.21.11. `build.gradle` và hướng dẫn cài đặt bên dưới
-> đã được cập nhật dùng PacketEvents 2.13.0 + Paper API 1.21.11. Nếu server bạn đang/sẽ chạy
-> một bản 1.21.x khác, sửa lại dòng `paper-api` trong `build.gradle` cho khớp đúng minor version,
-> và kiểm tra trang https://modrinth.com/plugin/packetevents để chọn bản PacketEvents hỗ trợ
-> đúng version server của bạn.
+> **Luu y quan trong ve version**: PacketEvents 2.5.0 (ban dau cua project) chi ho tro toi
+> Minecraft 1.21.1, KHONG chay dung tren 1.21.11. `build.gradle` va huong dan cai dat ben duoi
+> da duoc cap nhat dung PacketEvents 2.13.0 + Paper API 1.21.11. Neu server ban dang/se chay
+> mot ban 1.21.x khac, sua lai dong `paper-api` trong `build.gradle` cho khop dung minor version,
+> va kiem tra trang https://modrinth.com/plugin/packetevents de chon ban PacketEvents ho tro
+> dung version server cua ban.
 
-## Cài đặt
+## Cai dat
 
-1. Tải `PacketEvents-Spigot-2.13.0.jar` (hoặc bản mới hơn hỗ trợ đúng version server bạn) và bỏ vào thư mục `plugins/`.
-2. Build plugin bằng Gradle: `./gradlew build` (file jar nằm trong `build/libs/`).
-3. Bỏ file `GrimCompanion-1.0.0.jar` vào `plugins/`.
-4. Khởi động lại server. File `config.yml` sẽ được tạo tự động trong `plugins/GrimCompanion/`.
+1. Tai `PacketEvents-Spigot-2.13.0.jar` (hoac ban moi hon ho tro dung version server ban) va bo vao thu muc `plugins/`.
+2. Build plugin bang Gradle: `./gradlew build` (file jar nam trong `build/libs/`).
+3. Bo file `GrimCompanion-1.0.0.jar` vao `plugins/`.
+4. Khoi dong lai server. File `config.yml` se duoc tao tu dong trong `plugins/GrimCompanion/`.
 
-## Danh sách Check
+## Danh sach Check
 
 ### Combat
-| Check | Mô tả |
+| Check | Mo ta |
 |---|---|
-| CrystalAura | Đặt/phá End Crystal quá nhanh (< 100ms) |
-| AnchorAura | Đặt/phá Respawn Anchor quá nhanh |
-| AutoClicker | CPS quá cao hoặc click quá đều (stddev thấp) |
-| KillAura | Snap aim (xoay camera đột ngột) khi tấn công |
-| Reach | Tấn công từ khoảng cách > 3.2 block |
+| CrystalAura | Dat/pha End Crystal qua nhanh (< 100ms) |
+| AnchorAura | Dat/pha Respawn Anchor qua nhanh |
+| AutoClicker | CPS qua cao hoac click qua deu (stddev thap) |
+| KillAura | Snap aim (xoay camera dot ngot) khi tan cong |
+| Reach | Tan cong tu khoang cach > 3.2 block |
 
 ### Movement
-| Check | Mô tả |
+| Check | Mo ta |
 |---|---|
-| Flight | Bay trên không quá lâu bất thường mà không hợp lệ |
-| Speed | Di chuyển nhanh hơn tốc độ cho phép |
-| NoSlowdown | Không bị chậm khi block/ăn/giường nổ |
+| Flight | Bay tren khong lau bat thuong ma khong hop le |
+| Speed | Di chuyen nhanh hon toc do cho phep |
+| NoSlowdown | Khong bi cham khi block/an/giuong no |
 
 ### Exploit
-| Check | Mô tả |
+| Check | Mo ta |
 |---|---|
-| ItemMacro | Macro dùng item (ClickPearl, MiddleClickExtra) |
-| AutoFirework | Dùng firework tự động khi bay elytra |
-| ElytraTarget | Tự động bám mục tiêu khi bay elytra |
-| AutoCart | TNT Cart tự động |
-| CrystalOptimizer | Phát hiện Marlow's Crystal Optimizer |
-| ClientBrand | Không gửi brand hoặc brand nằm trong danh sách cấm |
-| Ping | Ping cao hoặc keep-alive bất thường |
+| ItemMacro | Macro dung item (ClickPearl, MiddleClickExtra) |
+| AutoFirework | Dung firework tu dong khi bay elytra |
+| ElytraTarget | Tu dong bam muc tieu khi bay elytra |
+| AutoCart | TNT Cart tu dong |
+| CrystalOptimizer | Phat hien Marlow's Crystal Optimizer |
+| ClientBrand | Khong gui brand hoac brand nam trong danh sach cam |
+| Ping | Ping cao hoac keep-alive bat thuong |
 
 ### World
-| Check | Mô tả |
+| Check | Mo ta |
 |---|---|
-| Scaffold | Đặt block quá nhanh (auto-bridge) |
+| Scaffold | Dat block qua nhanh (auto-bridge) |
 
-Tất cả ngưỡng (delay, CPS, góc, số VL...) đều chỉnh được trong `config.yml`.
+Tat ca nguong (delay, CPS, goc, so VL...) deu chinh duoc trong `config.yml`.
 
-## Lệnh
+## Lenh
 
-| Lệnh | Quyền | Mô tả |
+| Lenh | Quyen | Mo ta |
 |---|---|---|
 | `/gc reload` | `grimcompanion.admin` | Reload config |
-| `/gc check <player>` | `grimcompanion.admin` | Xem thông tin player (ping, brand...) |
-| `/gc alerts` | `grimcompanion.staff` | Bật/tắt nhận cảnh báo |
-| `/gc stats <player>` | `grimcompanion.admin` | Xem thống kê VL theo từng check |
-| `/gc reset <player>` | `grimcompanion.admin` | Reset toàn bộ VL của player |
+| `/gc check <player>` | `grimcompanion.admin` | Xem thong tin player (ping, brand...) |
+| `/gc alerts` | `grimcompanion.staff` | Bat/tat nhan canh bao |
+| `/gc stats <player>` | `grimcompanion.admin` | Xem thong ke VL theo tung check |
+| `/gc reset <player>` | `grimcompanion.admin` | Reset toan bo VL cua player |
 
-## Quyền hạn
+## Quyen han
 
-- `grimcompanion.*` - tất cả quyền
-- `grimcompanion.admin` - quản trị (reload, check, stats, reset)
-- `grimcompanion.staff` - nhận cảnh báo vi phạm realtime
-- `grimcompanion.bypass` - bỏ qua toàn bộ check (dùng cho test/staff)
+- `grimcompanion.*` - tat ca quyen
+- `grimcompanion.admin` - quan tri (reload, check, stats, reset)
+- `grimcompanion.staff` - nhan canh bao vi pham realtime
+- `grimcompanion.bypass` - bo qua toan bo check (dung cho test/staff)
 
-## PredictionEngine - Engine di chuyển riêng của GrimCompanion
+## PredictionEngine - Engine di chuyen RIENG cua GrimCompanion
 
-GrimCompanion có một **engine mô phỏng vật lý di chuyển của riêng mình**
-(`com.grimcompanion.engine.PredictionEngine`), không phụ thuộc GrimAC:
+GrimCompanion co mot **engine mo phong vat ly di chuyen cua rieng minh**
+(`com.grimcompanion.engine.PredictionEngine`), khong phu thuoc GrimAC:
 
-- Mỗi tick nhận gói tin vị trí, engine tự tính "vận tốc Y dự kiến" (theo trọng lực/nhảy)
-  và "tốc độ ngang tối đa hợp lệ" (theo sprint/sneak/potion), rồi so sánh với dữ liệu
-  client báo cáo thực tế.
-- Dùng **trust buffer** (bộ đệm tin cậy) riêng cho từng trục: sai lệch 1-2 tick do lag/jitter
-  sẽ không bị flag ngay, chỉ khi sai lệch LIÊN TỤC nhiều lần (mặc định 6 lần, chỉnh được qua
-  `engine.max-trust-buffer`) mới thực sự bị coi là vi phạm - giảm hẳn false positive.
-  Buffer tự hồi phục dần khi người chơi di chuyển hợp lệ trở lại.
-- Tự động **bỏ qua (skip)** những trạng thái quá phức tạp để mô phỏng đơn giản (creative,
-  elytra, bơi, leo, trong phương tiện, trong nước/nham...) thay vì đoán sai và báo flag oan.
-- `FlightCheck` và `SpeedCheck` dùng CHUNG 1 lần mô phỏng/tick (được `CheckManager` tính và
-  cache vào `PlayerData`), tránh gọi engine 2 lần làm sai lệch state.
-- Các ngưỡng tolerance/buffer đều chỉnh được trong `config.yml` (mục `engine:`).
+- Moi tick nhan goi tin vi tri, engine tu tinh "van toc Y du kien" (theo trong luc/nhay)
+  va "toc do ngang toi da hop le" (theo sprint/sneak/potion), roi so sanh voi du lieu
+  client bao cao thuc te.
+- Dung **trust buffer** (bo dem tin cay) rieng cho tung truc: sai lech 1-2 tick do lag/jitter
+  se khong bi flag ngay, chi khi sai lech LIEN TUC nhieu lan (mac dinh 6 lan, chinh duoc qua
+  `engine.max-trust-buffer`) moi thuc su bi coi la vi pham - giam han false positive.
+  Buffer tu hoi phuc dan khi nguoi choi di chuyen hop le tro lai.
+- Tu dong **bo qua (skip)** nhung trang thai qua phuc tap de mo phong don gian (creative,
+  elytra, boi, leo, trong phuong tien, trong nuoc/nham...) thay vi doan sai va bao flag oan.
+- `FlightCheck` va `SpeedCheck` dung CHUNG 1 lan mo phong/tick (duoc `CheckManager` tinh va
+  cache vao `PlayerData`), tranh goi engine 2 lan lam sai lech state.
+- Cac nguong tolerance/buffer deu chinh duoc trong `config.yml` (muc `engine:`).
 
-Engine này hoạt động **hoàn toàn độc lập**, không cần GrimAC để chạy đầy đủ. Nếu server có
-GrimAC, GrimCompanion vẫn chạy song song bình thường mà không xung đột/nhường nhịn gì cả.
+Engine nay hoat dong **hoan toan doc lap**, khong can GrimAC de chay day du. Neu server co
+GrimAC, GrimCompanion van chay song song binh thuong ma khong xung dot/nhuong nhin gi ca.
 
-## Tích hợp GrimAC (tuỳ chọn - chỉ để đối chiếu)
+## Tich hop GrimAC (tuy chon - chi de doi chieu)
 
-Nếu server có cài GrimAC, GrimCompanion sẽ tự động thử "hook" vào GrimAC khi khởi động
-(`GrimIntegration.java`) để **đối chiếu** kết quả giữa 2 hệ thống, KHÔNG còn dùng để nhường
-engine như trước nữa:
+Neu server co cai GrimAC, GrimCompanion se tu dong thu "hook" vao GrimAC khi khoi dong
+(`GrimIntegration.java`) de **doi chieu** ket qua giua 2 he thong, KHONG con dung de nhuong
+engine nhu truoc nua:
 
-- **`integration.relay-grimac-violations: true`** (mặc định) - đưa vi phạm từ GrimAC vào
-  chung hệ thống cảnh báo/thống kê của GrimCompanion (`/gc stats`, `/gc check`), hiển thị
-  với tiền tố `Grim:` để phân biệt với vi phạm từ PredictionEngine riêng của GrimCompanion.
-- `/gc check <player>` hiện cả 2 nguồn: trust buffer của engine riêng VÀ (nếu hook được)
-  VL của GrimAC cho check Speed, tiện lợi để so sánh 2 hệ thống.
+- **`integration.relay-grimac-violations: true`** (mac dinh) - dua vi pham tu GrimAC vao
+  chung he thong canh bao/thong ke cua GrimCompanion (`/gc stats`, `/gc check`), hien thi
+  voi tien to `Grim:` de phan biet voi vi pham tu PredictionEngine rieng cua GrimCompanion.
+- `/gc check <player>` hien ca 2 nguon: trust buffer cua engine rieng VA (neu hook duoc)
+  VL cua GrimAC cho check Speed, tien loi de so sanh 2 he thong.
 
-**Quan trọng về tính tương thích API**: GrimAC không cam kết API ổn định 100% giữa các bản.
-File `GrimIntegration.java` viết theo cấu trúc phổ biến của module `api` chính thức
-(`ac.grim.grimac.api.GrimAPI`), nhưng bạn **cần đối chiếu lại** với đúng version GrimAC
-đang chạy trên server (tên class/method có thể khác). Toàn bộ logic tích hợp được bọc trong
-`try-catch(Throwable)` nên nếu API không khớp, GrimCompanion sẽ tự động rơi về chế độ độc lập
-(không crash, chỉ mất phần đối chiếu - PredictionEngine riêng không bị ảnh hưởng chút nào).
+**Quan trong ve tinh tuong thich API**: GrimAC khong cam ket API on dinh 100% giua cac ban.
+File `GrimIntegration.java` viet theo cau truc pho bien cua module `api` chinh thuc
+(`ac.grim.grimac.api.GrimAPI`), nhung ban **can doi chieu lai** voi dung version GrimAC
+dang chay tren server (ten class/method co the khac). Toan bo logic tich hop duoc boc trong
+`try-catch(Throwable)` nen neu API khong khop, GrimCompanion se tu dong roi ve che do doc lap
+(khong crash, chi mat phan doi chieu - PredictionEngine rieng khong bi anh huong chut nao).
 
-## Lưu ý quan trọng
+## Luu y quan trong
 
-Đây là một **plugin companion (bổ sung)**, không phải anti-cheat hoàn chỉnh thay thế
-GrimAC. Các check di chuyển (Flight, Speed, NoSlowdown) sử dụng heuristic đơn giản
-hoá (không có prediction engine đầy đủ như GrimAC), nên có thể cần tinh chỉnh ngưỡng
-trong `config.yml` theo đặc thù server của bạn để tránh false positive. Khuyến nghị
-test kỹ trên server thử nghiệm trước khi dùng production, đặc biệt với các check
-liên quan tới kick/ban tự động.
+Day la mot **plugin companion (bo sung)**, khong phai anti-cheat hoan chinh thay the
+GrimAC. Cac check di chuyen (Flight, Speed, NoSlowdown) su dung heuristic don gian
+hoa (khong co prediction engine day du nhu GrimAC), nen co the can tinh chinh nguong
+trong `config.yml` theo dac thu server cua ban de tranh false positive. Khuyen nghi
+test ky tren server thu nghiem truoc khi dung production, dac biet voi cac check
+lien quan toi kick/ban tu dong.
 
-## Cấu trúc thư mục dữ liệu
+## Cau truc thu muc du lieu
 
 ```
 plugins/GrimCompanion/
@@ -135,18 +135,3 @@ plugins/GrimCompanion/
 └── logs/
     └── violations.log
 ```
-
-## Đóng góp / Góp ý
-
-Project này hiện **chưa có giấy phép (license)** đi kèm.
-
-Mọi góp ý, báo lỗi, đề xuất tính năng hoặc muốn đóng góp code, vui lòng vào server Discord sau để trao đổi trực tiếp thay vì mở Issue/PR trên GitHub:
-
-**Discord: https://discord.gg/6tZpsjMAM**
-
-Khi vào Discord, nên chuẩn bị sẵn:
-- Bạn đang gặp lỗi gì, hoặc muốn thêm/sửa tính năng gì
-- Version Paper/server, version PacketEvents, version GrimCompanion đang dùng
-- Log lỗi (nếu có) từ console hoặc `plugins/GrimCompanion/logs/violations.log`
-- Các bước để tái hiện lỗi (nếu là bug)
-- Muốn làm dev plugin này 

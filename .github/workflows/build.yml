@@ -1,0 +1,48 @@
+name: Build GrimCompanion
+
+# Chay khi push/PR vao nhanh main hoac khi bam "Run workflow" thu cong tren GitHub.
+on:
+  push:
+    branches: [ "1.0" ]
+  pull_request:
+    branches: [ "1.0" ]
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Tai code ve runner
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Cai Java 21 (bat buoc: Paper 1.21.11 va PacketEvents 2.13.0 deu can Java 21)
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      # 3. Cai va cache Gradle (khong can commit gradlew/gradle-wrapper.jar vao repo,
+      #    action nay tu tai dung ban Gradle can thiet).
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      # 4. Build plugin (tao file .jar trong build/libs/)
+      - name: Build with Gradle
+        run: gradle build --no-daemon
+
+      # 5. Upload file .jar da build thanh artifact de tai ve tu tab "Actions" tren GitHub
+      - name: Upload plugin jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: GrimCompanion-jar
+          path: build/libs/*.jar
+          if-no-files-found: error
+
+      # 6. (Tuy chon) Chay test neu sau nay ban them unit test vao thu muc src/test
+      - name: Run tests
+        run: gradle test --no-daemon
+        continue-on-error: true
