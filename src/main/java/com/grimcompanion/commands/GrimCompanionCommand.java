@@ -156,21 +156,41 @@ public class GrimCompanionCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(prefix + "§cCu phap: /gc stats <player>");
             return;
         }
-        Player target = Bukkit.getPlayer(args[1]);
-        if (target == null) {
+
+        Player online = Bukkit.getPlayer(args[1]);
+        if (online != null) {
+            // Nguoi choi dang online: uu tien du lieu RAM (moi nhat, chua kip ghi xong SQLite
+            // async cung khong sao vi RAM luon la nguon "song" nhat trong luc dang choi).
+            PlayerData data = plugin.getDataManager().getPlayerData(online);
+            Map<String, Integer> violations = data.getAllViolations();
+
+            sender.sendMessage(prefix + "§7Thong ke vi pham cua §f" + online.getName() + " §7(dang online):");
+            if (violations.isEmpty()) {
+                sender.sendMessage("§7  Khong co vi pham nao trong phien nay.");
+            } else {
+                violations.forEach((check, vl) ->
+                        sender.sendMessage("§7  - §c" + check + "§7: §f" + vl + " VL"));
+            }
+            return;
+        }
+
+        // Nguoi choi offline: doc tu SQLite (du lieu qua cac lan restart truoc, RAM da mat het).
+        org.bukkit.OfflinePlayer offline = Bukkit.getOfflinePlayer(args[1]);
+        if (offline.getUniqueId() == null || (!offline.hasPlayedBefore() && offline.getName() == null)) {
             sender.sendMessage(prefix + errMsg("player-not-found"));
             return;
         }
-        PlayerData data = plugin.getDataManager().getPlayerData(target);
-        Map<String, Integer> violations = data.getAllViolations();
-
-        sender.sendMessage(prefix + "§7Thong ke vi pham cua §f" + target.getName() + "§7:");
-        if (violations.isEmpty()) {
-            sender.sendMessage("§7  Khong co vi pham nao.");
+        if (!plugin.getSqliteStorage().isAvailable()) {
+            sender.sendMessage(prefix + "§cPlayer khong online va SQLite storage khong kha dung - khong the tra cuu lich su.");
             return;
         }
-        violations.forEach((check, vl) ->
-                sender.sendMessage("§7  - §c" + check + "§7: §f" + vl + " VL"));
+        Map<String, Integer> totals = plugin.getSqliteStorage().loadPlayerTotals(offline.getUniqueId());
+        sender.sendMessage(prefix + "§7Thong ke vi pham cua §f" + args[1] + " §7(offline, tu SQLite):");
+        if (totals.isEmpty()) {
+            sender.sendMessage("§7  Khong co vi pham nao duoc luu.");
+            return;
+        }
+        totals.forEach((check, vl) -> sender.sendMessage("§7  - §c" + check + "§7: §f" + vl + " VL (tong tich luy)"));
     }
 
     private void handleReset(CommandSender sender, String prefix, String[] args) {
@@ -182,14 +202,28 @@ public class GrimCompanionCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(prefix + "§cCu phap: /gc reset <player>");
             return;
         }
-        Player target = Bukkit.getPlayer(args[1]);
-        if (target == null) {
-            sender.sendMessage(prefix + errMsg("player-not-found"));
-            return;
+
+        UUID targetUuid;
+        String targetName;
+        Player online = Bukkit.getPlayer(args[1]);
+        if (online != null) {
+            plugin.getDataManager().getPlayerData(online).resetAllViolations();
+            targetUuid = online.getUniqueId();
+            targetName = online.getName();
+        } else {
+            org.bukkit.OfflinePlayer offline = Bukkit.getOfflinePlayer(args[1]);
+            if (!offline.hasPlayedBefore()) {
+                sender.sendMessage(prefix + errMsg("player-not-found"));
+                return;
+            }
+            targetUuid = offline.getUniqueId();
+            targetName = args[1];
         }
-        PlayerData data = plugin.getDataManager().getPlayerData(target);
-        data.resetAllViolations();
-        sender.sendMessage(prefix + msg("reset-success", "&aDa reset VL!").replace("{player}", target.getName()));
+
+        // Xoa dong bo ca SQLite (chay async, khong chan main thread)
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> plugin.getSqliteStorage().resetPlayer(targetUuid));
+
+        sender.sendMessage(prefix + msg("reset-success", "&aDa reset VL!").replace("{player}", targetName));
     }
 
     private void sendHelp(CommandSender sender, String prefix) {
