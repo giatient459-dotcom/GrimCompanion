@@ -7,6 +7,7 @@ import com.grimcompanion.commands.GrimCompanionCommand;
 import com.grimcompanion.compat.AntiCheatDetector;
 import com.grimcompanion.compat.BypassManager;
 import com.grimcompanion.data.DataManager;
+import com.grimcompanion.data.SqliteStorage;
 import com.grimcompanion.engine.PredictionEngine;
 import com.grimcompanion.integration.GrimIntegration;
 import com.grimcompanion.listeners.PacketListener;
@@ -29,6 +30,7 @@ public final class GrimCompanion extends JavaPlugin {
     private PredictionEngine predictionEngine;
     private BypassManager bypassManager;
     private AntiCheatDetector antiCheatDetector;
+    private SqliteStorage sqliteStorage;
 
     @Override
     public void onLoad() {
@@ -52,6 +54,17 @@ public final class GrimCompanion extends JavaPlugin {
         this.predictionEngine = new PredictionEngine(this);
         this.checkManager = new CheckManager(this);
         this.bypassManager = new BypassManager();
+
+        // Ket noi SQLite storage (luu vi pham qua cac lan restart). Neu that bai, plugin
+        // van chay binh thuong o che do chi luu RAM nhu truoc day - xem SqliteStorage.java.
+        this.sqliteStorage = new SqliteStorage(this);
+        sqliteStorage.connect();
+
+        // Don dep lich su vi pham cu (giu lai 30 ngay gan nhat) - chay 1 lan/ngay (72000 tick),
+        // delay lan dau 5 phut sau khi server khoi dong de khong lam nang tai luc startup.
+        int keepDays = getConfig().getInt("storage.keep-history-days", 30);
+        getServer().getScheduler().runTaskTimerAsynchronously(this,
+                () -> sqliteStorage.pruneOldHistory(keepDays), 6000L, 1728000L);
 
         // Don dep bypass het han moi 20 giay (400 tick), tranh memory leak neu server chay lau
         getServer().getScheduler().runTaskTimer(this, () -> bypassManager.cleanupExpired(), 400L, 400L);
@@ -87,6 +100,9 @@ public final class GrimCompanion extends JavaPlugin {
         if (PacketEvents.getAPI() != null) {
             PacketEvents.getAPI().terminate();
         }
+        if (sqliteStorage != null) {
+            sqliteStorage.close();
+        }
         if (dataManager != null) {
             dataManager.clearAll();
         }
@@ -119,5 +135,9 @@ public final class GrimCompanion extends JavaPlugin {
 
     public BypassManager getBypassManager() {
         return bypassManager;
+    }
+
+    public SqliteStorage getSqliteStorage() {
+        return sqliteStorage;
     }
 }
