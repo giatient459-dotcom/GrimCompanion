@@ -130,6 +130,11 @@ public class CheckManager {
             plugin.getDataManager().writeLog(logMsg);
         }
 
+        // Luu vao SQLite (chay tren thread rieng, KHONG chan main thread bang I/O dia).
+        // Neu SQLite khong kha dung (xem SqliteStorage.java), recordViolation() tu bo qua an toan.
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () ->
+                plugin.getSqliteStorage().recordViolation(player.getUniqueId(), player.getName(), checkName, details, vl));
+
         // Canh bao staff
         int warnLevel = plugin.getConfig().getInt("punishments.warn-level", 3);
         if (vl >= warnLevel) {
