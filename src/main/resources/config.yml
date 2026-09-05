@@ -11,6 +11,15 @@ debug: false
 log-to-file: true
 
 # =========================================================
+#  Luu tru vi pham lau dai (SQLite - plugins/GrimCompanion/data.db)
+# =========================================================
+storage:
+  # So ngay giu lai lich su chi tiet (bang "violations") truoc khi tu dong don dep.
+  # Bang tong "player_totals" (dung cho /gc stats) KHONG bi anh huong boi cai nay,
+  # luon giu nguyen tong tich luy vinh vien tru khi /gc reset.
+  keep-history-days: 30
+
+# =========================================================
 #  Tich hop GrimAC (hoan toan TUY CHON - GrimCompanion co PredictionEngine rieng,
 #  khong can GrimAC de hoat dong day du. Muc nay chi dung de DOI CHIEU du lieu.)
 # =========================================================
